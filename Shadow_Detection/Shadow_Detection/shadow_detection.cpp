@@ -68,6 +68,7 @@ struct pixelInformation{   //结构体存放每个像素点的信息
 	int initColor_B;  //原图的RBG颜色-B
 	int initColor_G;  //原图的RBG颜色-G
 	int initColor_R;  //原图的RBG颜色-R
+	int revise;  //判断该像素是否被修改。0，没有被修改；1，被修改
 };
 //struct pixelInformation graph[WIDTH][HEIGHT];
 struct pixelInformation graph[HEIGHT][WIDTH];
@@ -364,21 +365,21 @@ int chromaticityDiffer()
 	}
 	cout<<"色度差检测到的阴影像素数："<<chromaticityShadowNum<<endl;
 
-/*	//测试struct存储的阴影信息是否与色度差检测结果一致
+	/*	//测试struct存储的阴影信息是否与色度差检测结果一致
 	int testNum=0;
 	for(int i=0;i<HEIGHT;i++)
 	{
-		for(int j=0;j<WIDTH;j++)
-		{	
-			if(graph[i][j].category==2)
-				testNum++;
-		}
+	for(int j=0;j<WIDTH;j++)
+	{	
+	if(graph[i][j].category==2)
+	testNum++;
+	}
 	}
 	cout<<"结构体中存储的阴影数为:"<<testNum<<endl;
 
 	cout<<"row="<<sceneMat.rows<<endl;
 	cout<<"col="<<sceneMat.cols<<endl;
-*/
+	*/
 
 	namedWindow("色度差检测结果",WINDOW_NORMAL);
 	imshow("色度差检测结果", chromaticityMat);
@@ -570,7 +571,7 @@ int brightnessDiffer()
 int localRelation()
 {
 	cout<<"-------------局部强度比检测阴影------------------"<<endl;
-//	localMat=brightnessMat.clone();   //深拷贝：localMat拷贝了brightnessMat，形成一个新的图像矩阵，两者相互没有影响
+	//	localMat=brightnessMat.clone();   //深拷贝：localMat拷贝了brightnessMat，形成一个新的图像矩阵，两者相互没有影响
 	localMat=imread("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness+chromaticity.bmp");  //读取图像
 	namedWindow("色度+亮度差检测结果",WINDOW_NORMAL);
 	imshow("色度+亮度差检测结果", localMat);
@@ -604,7 +605,7 @@ int localRelation()
 					q_B[i][j]= pow((bd_B[i][j-1]-bd_m_B)/bd_variance_B,2)+ pow((bd_B[i+1][j]-bd_m_B)/bd_variance_B,2)+ pow((bd_B[i][j+1]-bd_m_B)/bd_variance_B,2)+ pow((bd_B[i-1][j]-bd_m_B)/bd_variance_B,2);
 					q_G[i][j]= pow((bd_G[i][j-1]-bd_m_G)/bd_variance_G,2)+ pow((bd_B[i+1][j]-bd_m_G)/bd_variance_G,2)+ pow((bd_B[i][j+1]-bd_m_G)/bd_variance_G,2)+ pow((bd_B[i-1][j]-bd_m_G)/bd_variance_G,2);
 					q_R[i][j]= pow((bd_B[i][j-1]-bd_m_R)/bd_variance_R,2)+ pow((bd_B[i+1][j]-bd_m_R)/bd_variance_R,2)+ pow((bd_R[i][j+1]-bd_m_R)/bd_variance_R,2)+ pow((bd_B[i-1][j]-bd_m_R)/bd_variance_R,2);
-				
+
 					/*//输出Q值
 					cout<<"q_B="<<q_B[i][j]<<"\t"<<"q_G="<<q_G[i][j]<<"\t"<<"q_R="<<q_R[i][j]<<endl;
 					notBoarder++;  //非边缘阴影像素个数
@@ -615,7 +616,7 @@ int localRelation()
 	}
 	//cout<<"shadow Num:"<<sNum<<endl;
 	//cout<<"shadow exclude boarder Num:"<<notBoarder<<endl;
-	
+
 	//利用Q值，将色度+亮度检测到的阴影，再次做判断
 	int addObject=0;   //局部关系新检测出的物体像素数
 	for(int i=1;i<localMat.rows-1;i++)  //注：图片边缘无需计算Q值，注意i和j的取值范围
@@ -708,35 +709,6 @@ int spatialAjustment()
 	imshow("对比：色度+亮度差+局部检测结果", spacialMat);
 	waitKey(0);
 
-/*	cout<<"图片大小"<<spacialMat.rows<<"*"<<spacialMat.cols<<endl;
-	//统计当前的物体(红色）像素个数
-	int objectNum=0;
-	int shadowNum=0;
-	int backNum=0;
-	for(int i=0;i<spacialMat.rows;i++)
-	{
-		for(int j=0;j<spacialMat.cols;j++)
-		{
-			//物体：红色
-			//if( abs(spacialMat.at<Vec3b>(i,j)[0]-0)==0 && abs(spacialMat.at<Vec3b>(i,j)[1]-0)==0 && abs(spacialMat.at<Vec3b>(i,j)[2]-255)==0 )
-			if( spacialMat.at<Vec3b>(i,j)[0]==0 && spacialMat.at<Vec3b>(i,j)[1]==0 && spacialMat.at<Vec3b>(i,j)[2]==255 )
-				objectNum++;
-			else if( spacialMat.at<Vec3b>(i,j)[0]==0 && spacialMat.at<Vec3b>(i,j)[1]==255 && spacialMat.at<Vec3b>(i,j)[2]==0 )
-				shadowNum++;
-			else
-				backNum++;
-		}
-	}
-	cout<<"当前物体像素个数："<<objectNum<<endl;
-	cout<<"当前阴影像素个数："<<shadowNum<<endl;
-	cout<<"当前背景像素个数："<<backNum<<endl;
-
-
-	//定义小连通域：物体像素总数的4%
-	int connectedDomain;
-	connectedDomain = objectNum * 0.04;
-	cout<<"连通域包含的像素个数："<<connectedDomain<<endl;
-*/
 	//将原图转为灰度图
 	cvtColor(spacialMat, spacialGrayMat, CV_BGR2GRAY);
 
@@ -745,18 +717,13 @@ int spatialAjustment()
 	imshow(WINDOW_NAME1, spacialMat);
 	waitKey(0);
 
-/*	//创建灰度图窗口并显示
-	namedWindow("灰度图", CV_WINDOW_AUTOSIZE);
-	imshow("灰度图", spacialGrayMat);
-	waitKey(0);
-	*/
 
 	//创建滑动条来控制阈值
 	/*  第一个参数：滑动条名称
-		第二个参数：窗口名称
-		第三个参数：当滑动条被拖到时，opencv会自动将当前位置所代表的值传递给指针指向的整数
-		第四个参数：滑动条所能到达的最大值
-		第五个参数：可选的回调函数,这里为自定义的阈值函数
+	第二个参数：窗口名称
+	第三个参数：当滑动条被拖到时，opencv会自动将当前位置所代表的值传递给指针指向的整数
+	第四个参数：滑动条所能到达的最大值
+	第五个参数：可选的回调函数,这里为自定义的阈值函数
 	*/
 	createTrackbar("阈值", WINDOW_NAME1, &g_nThresh, g_maxThresh, on_ThreshChange);
 	on_ThreshChange(0,0);   //初始化自定义的阈值函数
@@ -773,170 +740,6 @@ int spatialAjustment()
 	return 0;
 }
 
-//基于上一步手动阈值效果，用最小连通域对图像进行优化
-void improvedSpace()
-{
-	spacialMat=imread("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp");  //读取图像
-	cout<<"图片大小"<<spacialMat.rows<<"*"<<spacialMat.cols<<endl;
-	//统计当前的物体(红色）像素个数
-	int objectNum=0;
-	int shadowNum=0;
-	int backNum=0;
-	for(int i=0;i<spacialMat.rows;i++)
-	{
-		for(int j=0;j<spacialMat.cols;j++)
-		{
-			//物体：红色
-			//if( abs(spacialMat.at<Vec3b>(i,j)[0]-0)==0 && abs(spacialMat.at<Vec3b>(i,j)[1]-0)==0 && abs(spacialMat.at<Vec3b>(i,j)[2]-255)==0 )
-			if( spacialMat.at<Vec3b>(i,j)[0]==0 && spacialMat.at<Vec3b>(i,j)[1]==0 && spacialMat.at<Vec3b>(i,j)[2]==255 )
-				objectNum++;
-			else if( spacialMat.at<Vec3b>(i,j)[0]==0 && spacialMat.at<Vec3b>(i,j)[1]==255 && spacialMat.at<Vec3b>(i,j)[2]==0 )
-				shadowNum++;
-			else
-				backNum++;
-		}
-	}
-	cout<<"当前物体像素个数："<<objectNum<<endl;
-	cout<<"当前阴影像素个数："<<shadowNum<<endl;
-	cout<<"当前背景像素个数："<<backNum<<endl;
-
-
-	//定义小连通域：物体像素总数的4%
-	int connectedDomain;
-	connectedDomain = objectNum * 0.04;
-	cout<<"连通域包含的像素个数："<<connectedDomain<<endl;
-
-	//基于之前的阈值调整，以下利用最优的阈值
-	IplImage* src=NULL;
-	IplImage* img=NULL;
-	IplImage* dst=NULL;
-
-	CvMemStorage* storage=cvCreateMemStorage(0);
-	CvSeq* contour=0;
-	int contours=0;  //轮廓数量
-	CvScalar external_color;  //外轮廓颜色。图像二值化后，只有黑色和白色，白色区域的轮廓是“外轮廓”
-	CvScalar hole_color;  //内轮廓颜色，黑色区域的轮廓是“内轮廓”
-
-	src=cvLoadImage("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp",1);
-	img=cvCreateImage(cvGetSize(src), IPL_DEPTH_8U, 1);
-	dst=cvCreateImage(cvGetSize(src), src->depth, src->nChannels);
-
-	cvCvtColor(src, img, CV_BGR2GRAY);
-	//注意！！！！！此处的100是基于之前手动阈值调整自己设置的最优寻找轮廓的阈值！！！！
-	cvThreshold(img, img, 100, 200, CV_THRESH_BINARY);
-	
-	IplImage* contour_image=0;  
-	contour_image=cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, 1);
-	//拷贝二值图像用于计算轮廓
-	cvCopy(img, contour_image, 0);
-
-	//找到二值图像中的轮廓
-	/*  CV_RETR_CCOMP：检测所有的轮廓，并将它们组织成双层结构(two-level hierarch)
-	    CV_CHAIN_APPROX_SIMPLE：压缩水平、垂直或斜的部分，只保存最后一个点
-	*/
-	cvFindContours(contour_image, storage, &contour, sizeof(CvContour), CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
-
-	cout<<"---------------------开始填充小连通域------------------"<<endl;
-	int tempRow,tempCol;  //像素所在行和列
-	int tempB,tempG,tempR;  //像素RGB
-	CvSeq* contours_tmp=0;
-	contours_tmp=contour;
-	int i=0;
-	for( ; contours_tmp!=0; contours_tmp=contours_tmp->h_next)  //h->next：指向下一个外轮廓
-	{
-		CvSeq *InterCon=contours_tmp->v_next;  //访问每个轮廓的内轮廓
-		for( ; InterCon!=0; InterCon=InterCon->h_next)
-		{
-			//计算每个轮廓的面积
-			double area = fabs(cvContourArea(InterCon,CV_WHOLE_SEQ));
-			cout<<"第"<<i<<"个轮廓的面积为："<<area<<endl;
-			i++;
-			if(area<=connectedDomain)  //只有轮廓面积小于最小连通域，才修正颜色
-			{
-				cout<<"**************填充第"<<i<<"个轮廓*****************"<<endl;
-				//contours_tmp->total：序列contours_tmp中点的总数
-				for(int j=0; j<contours_tmp->total; j++)  //提取一个轮廓的所有坐标点
-				{
-					//cvGetSeqElem（）：返回索引指定的元素指针
-					CvPoint *pt=(CvPoint*)cvGetSeqElem(contours_tmp, j);  //cvGetSeqElem：得到轮廓中的一个点
-
-					//存储该位置像素的位置信息
-					tempRow=pt->y;
-					tempCol=pt->x;
-					//排除图像边缘
-					if(tempRow!=0 || tempRow!=HEIGHT-1 || tempCol!=0 || tempCol!=WIDTH-1)
-					{
-						//存储该位置像素的颜色信息
-						tempB=spacialMat.at<Vec3b>(tempRow,tempCol)[0];
-						tempG=spacialMat.at<Vec3b>(tempRow,tempCol)[1];
-						tempR=spacialMat.at<Vec3b>(tempRow,tempCol)[2];
-
-						//该像素四邻域的颜色信息
-						//当邻域像素与该位置颜色不同时，就不必继续看其他邻域像素，可以直接对该轮廓进行填充
-						int b,g,r;
-						//上边的点
-						b=spacialMat.at<Vec3b>(tempRow-1,tempCol)[0];
-						g=spacialMat.at<Vec3b>(tempRow-1,tempCol)[1];
-						r=spacialMat.at<Vec3b>(tempRow-1,tempCol)[2];
-						if(b!=tempB && g!=tempG && r!=tempR)
-						{
-							/*  cvDrawContours()：在图像上绘制外部内部轮廓
-								第一个参数：要在其上绘制轮廓的图像
-								第二个参数：指向第一个轮廓的指针
-								第三个参数：外轮廓的颜色
-								第四个参数：内轮廓的颜色
-								第五个参数：画轮廓的最大层数。0：只绘制contours_tmp
-								第六个参数：绘制轮廓线的宽度。CV_FILLED：contours_tmp内部将被绘制
-								第七个参数：轮廓线段的类型
-								第八个参数：按给定值移动所有点的坐标
-							*/
-							cvDrawContours(src, contours_tmp, CV_RGB(b,g,r), CV_RGB(b,g,r), 0, CV_FILLED, 8, cvPoint(0,0));
-							continue;
-						}
-						//右边的点
-						b=spacialMat.at<Vec3b>(tempRow,tempCol+1)[0];
-						g=spacialMat.at<Vec3b>(tempRow,tempCol+1)[1];
-						r=spacialMat.at<Vec3b>(tempRow,tempCol+1)[2];
-						if(b!=tempB && g!=tempG && r!=tempR)
-						{
-							cvDrawContours(src, contours_tmp, CV_RGB(b,g,r), CV_RGB(b,g,r), 0, CV_FILLED, 8, cvPoint(0,0));
-							continue;
-						}
-						//下边的点
-						b=spacialMat.at<Vec3b>(tempRow+1,tempCol)[0];
-						g=spacialMat.at<Vec3b>(tempRow+1,tempCol)[1];
-						r=spacialMat.at<Vec3b>(tempRow+1,tempCol)[2];
-						if(b!=tempB && g!=tempG && r!=tempR)
-						{
-							cvDrawContours(src, contours_tmp, CV_RGB(b,g,r), CV_RGB(b,g,r), 0, CV_FILLED, 8, cvPoint(0,0));
-							continue;
-						}
-						//左边的点
-						b=spacialMat.at<Vec3b>(tempRow,tempCol-1)[0];
-						g=spacialMat.at<Vec3b>(tempRow,tempCol-1)[1];
-						r=spacialMat.at<Vec3b>(tempRow,tempCol-1)[2];
-						if(b!=tempB && g!=tempG && r!=tempR)
-						{
-							cvDrawContours(src, contours_tmp, CV_RGB(b,g,r), CV_RGB(b,g,r), 0, CV_FILLED, 8, cvPoint(0,0));
-							continue;
-						}
-					}
-				}
-			}
-		}
-	}
-	cvNamedWindow("最小连通域最优化",CV_WINDOW_AUTOSIZE);
-	cvShowImage("最小连通域最优化",src);
-	cvWaitKey(0);
-
-	cvReleaseMemStorage(&storage);
-	cvReleaseImage(&src);
-	cvReleaseImage(&img);
-	cvReleaseImage(&dst);
-	cvReleaseImage(&contour_image);
-
-}
-
 //自定义的阈值函数
 void on_ThreshChange(int, void*)
 {
@@ -947,30 +750,25 @@ void on_ThreshChange(int, void*)
 
 	//对图像进行二值化
 	/*  threshold函数：遍历灰度图，将图像信息二值化，处理过后的图片只有两种色值
-		第一个参数：输入，必须为单通道，8bit或32bit浮点类型的Mat即可
-		第二个参数：存放输出结果，且与第一个参数有相同的尺寸和类型
-		第三个参数：阈值的具体值
-		第四个参数：maxvalue，当第五个参数取THRESH_BINARY或THRESH_BINARY_INV类型时的最大值（二值化：0黑，255白）
-		第五个参数：阈值类型：THRESH_BINARY 当前点大于阈值时，取maxvalue（即第四个参数），否则设置为0
+	第一个参数：输入，必须为单通道，8bit或32bit浮点类型的Mat即可
+	第二个参数：存放输出结果，且与第一个参数有相同的尺寸和类型
+	第三个参数：阈值的具体值
+	第四个参数：maxvalue，当第五个参数取THRESH_BINARY或THRESH_BINARY_INV类型时的最大值（二值化：0黑，255白）
+	第五个参数：阈值类型：THRESH_BINARY 当前点大于阈值时，取maxvalue（即第四个参数），否则设置为0
 	*/
 	threshold(spacialGrayMat, threshold_output, g_nThresh, 255, THRESH_BINARY);
 
-/*	//创建二值化图窗口并显示
-	namedWindow("二值图", CV_WINDOW_AUTOSIZE);
-	imshow("二值图", spacialGrayMat);
-	waitKey(0);
-	*/
-
+	
 	//寻找轮廓
 	/*  第一个参数：输入图像，8bit的单通道二值图像
-		contours：检测到的轮廓，是一个向量，每个元素都是一个轮廓。因此，这个向量的每个元素都是一个向量，即vector<vector<Point>>contours
-		hierarchy:各个轮廓的继承关系。hierarchy也是一个向量，长度与contours相等，每个元素和contours的元素对应。
-				  hierarchy的每个元素是一个包含四个整型数的向量，即vector<Vec4i>hierarchy
-				  hierarchy[i][0],hierarchy[i][1],hierarchy[i][2],hierarchy[i][3]分别表示第i条轮廓（contours[i])的下一条，前一条，包含的第一条子轮廓和包含它的父轮廓
-		第四个参数：检测轮廓的方法，共有四种。CV_RETR_TREE检测所有轮廓，并建立所有的继承（包含）关系。
-		第五个参数：表示一条轮廓的方法。CV_CHAIN_APPROX_SIMPLE只存储水平、垂直、对角直线的起始点。
-		第六个参数：每一个轮廓点的偏移量，当轮廓是从图形ROI中（感兴趣区）提取出来的时候，使用偏移量有用，因为可以从整个图像上下文来对轮廓做分析
-					例如，想从图像的(100,0)开始进行轮廓检测，就传入（100，0）
+	contours：检测到的轮廓，是一个向量，每个元素都是一个轮廓。因此，这个向量的每个元素都是一个向量，即vector<vector<Point>>contours
+	hierarchy:各个轮廓的继承关系。hierarchy也是一个向量，长度与contours相等，每个元素和contours的元素对应。
+	hierarchy的每个元素是一个包含四个整型数的向量，即vector<Vec4i>hierarchy
+	hierarchy[i][0],hierarchy[i][1],hierarchy[i][2],hierarchy[i][3]分别表示第i条轮廓（contours[i])的下一条，前一条，包含的第一条子轮廓和包含它的父轮廓
+	第四个参数：检测轮廓的方法，共有四种。CV_RETR_TREE检测所有轮廓，并建立所有的继承（包含）关系。
+	第五个参数：表示一条轮廓的方法。CV_CHAIN_APPROX_SIMPLE只存储水平、垂直、对角直线的起始点。
+	第六个参数：每一个轮廓点的偏移量，当轮廓是从图形ROI中（感兴趣区）提取出来的时候，使用偏移量有用，因为可以从整个图像上下文来对轮廓做分析
+	例如，想从图像的(100,0)开始进行轮廓检测，就传入（100，0）
 	*/
 	findContours(threshold_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0,0));
 
@@ -980,8 +778,8 @@ void on_ThreshChange(int, void*)
 	for(int i=0; i<contours.size(); i++)
 	{
 		/*  第一个参数：要求的凸包的点集
-			第二个参数：输出的凸包点
-			第三个参数：bool变量，表示求得的凸包是顺时针还是逆时针方向。true是顺时针
+		第二个参数：输出的凸包点
+		第三个参数：bool变量，表示求得的凸包是顺时针还是逆时针方向。true是顺时针
 		*/
 		convexHull(Mat(contours[i]), hull[i], false);
 	}
@@ -995,20 +793,20 @@ void on_ThreshChange(int, void*)
 		Scalar color=Scalar(g_rng.uniform(0,255), g_rng.uniform(0,255), g_rng.uniform(0,255));
 
 		/*drawContours：画出图像的轮廓
-		  第一个参数：目标图像
-		  第二个参数：输入的轮廓组，每一组轮廓由点vector构成
-		  第三个参数：指明画第几个轮廓
-		  第四个参数：轮廓的颜色
-		  第五个参数：轮廓的线宽。如果为负值或者CV_FILLED表示填充轮廓内部
-		  第六个参数：线条的类型
-		  第七个参数：轮廓结构信息
-		  第八个参数：MAX_LEVEL，绘制轮廓的最大等级。如果为0，绘制单独的轮廓；如果为1，绘制轮廓及其后的相同级别的轮廓。如果为2，所有的轮廓。
-		  第九个参数：按照给出的偏移量移动每一个轮廓点坐标。当轮廓是从某些感兴趣区域（ROI）中提取时，需要考虑ROI偏移量，会用到这个参数
+		第一个参数：目标图像
+		第二个参数：输入的轮廓组，每一组轮廓由点vector构成
+		第三个参数：指明画第几个轮廓
+		第四个参数：轮廓的颜色
+		第五个参数：轮廓的线宽。如果为负值或者CV_FILLED表示填充轮廓内部
+		第六个参数：线条的类型
+		第七个参数：轮廓结构信息
+		第八个参数：MAX_LEVEL，绘制轮廓的最大等级。如果为0，绘制单独的轮廓；如果为1，绘制轮廓及其后的相同级别的轮廓。如果为2，所有的轮廓。
+		第九个参数：按照给出的偏移量移动每一个轮廓点坐标。当轮廓是从某些感兴趣区域（ROI）中提取时，需要考虑ROI偏移量，会用到这个参数
 		*/
 		drawContours(drawing, contours, i, color, 1, 8, vector<Vec4i>(), 0, Point());
 		//drawContours(drawing, hull, i, color, 1, 8, vector<Vec4i>(), 0, Point());
 
-/*		//计算每个轮廓的面积
+		/*		//计算每个轮廓的面积
 		double area = fabs(contourArea(contours[i], true));
 		cout<<"第"<<i<<"个轮廓的面积为："<<area<<endl;
 		*/
@@ -1019,22 +817,434 @@ void on_ThreshChange(int, void*)
 	imshow(WINDOW_NAME2, drawing);
 }
 
+//填充小连通域
+void fillSmallDomain()
+{
+	spacialMat=imread("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp");  //读取图像
+	//统计当前的物体(红色）像素个数
+	int objectNum=0;
+	int shadowNum=0;
+	int backNum=0;
+	for(int i=0;i<spacialMat.rows;i++)
+	{
+		for(int j=0;j<spacialMat.cols;j++)
+		{
+			graph[i][j].revise=0;
+			//物体：红色
+			//if( abs(spacialMat.at<Vec3b>(i,j)[0]-0)==0 && abs(spacialMat.at<Vec3b>(i,j)[1]-0)==0 && abs(spacialMat.at<Vec3b>(i,j)[2]-255)==0 )
+			if( spacialMat.at<Vec3b>(i,j)[0]==0 && spacialMat.at<Vec3b>(i,j)[1]==0 && spacialMat.at<Vec3b>(i,j)[2]==255 )	
+			{
+				objectNum++;
+				graph[i][j].category=1;
+			}
+			else if( spacialMat.at<Vec3b>(i,j)[0]==0 && spacialMat.at<Vec3b>(i,j)[1]==255 && spacialMat.at<Vec3b>(i,j)[2]==0 )
+			{
+				shadowNum++;
+				graph[i][j].category=2;
+			}
+			else
+			{
+				backNum++;
+				graph[i][j].category=0;
+			}
+		}
+	}
+	cout<<"当前物体像素个数："<<objectNum<<endl;
+	cout<<"当前阴影像素个数："<<shadowNum<<endl;
+	cout<<"当前背景像素个数："<<backNum<<endl;
+
+
+	//定义小连通域：物体像素总数的4%
+	double connectedDomain;
+	connectedDomain = objectNum * 0.04;
+	cout<<"连通域包含的像素个数："<<connectedDomain<<endl;
+
+	//-------------基于之前的阈值调整，以下利用最优的阈值------------------------------
+	IplImage* src=NULL;
+	IplImage* img=NULL;
+	IplImage* dst=NULL;
+
+	CvMemStorage* storage=cvCreateMemStorage(0);
+	CvSeq* contour=0;
+
+	CvScalar external_color;  //外轮廓颜色。图像二值化后，只有黑色和白色，白色区域的轮廓是“外轮廓”
+	CvScalar hole_color;  //内轮廓颜色，黑色区域的轮廓是“内轮廓”
+
+	src=cvLoadImage("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp",1);
+	img=cvCreateImage(cvGetSize(src), IPL_DEPTH_8U, 1);
+	dst=cvCreateImage(cvGetSize(src), src->depth, src->nChannels);
+
+	cvCvtColor(src, img, CV_BGR2GRAY);
+	//注意！！！！！此处的100是基于之前手动阈值调整自己设置的最优寻找轮廓的阈值！！！！
+	cvThreshold(img, img, 100, 200, CV_THRESH_BINARY);
+
+	//找到二值图像中的轮廓
+	/*  CV_RETR_LIST：提取所有轮廓，并放置在list中
+	CV_CHAIN_APPROX_NONE：将所有点由链码形式转化为点序列形式
+	*/
+	cvFindContours(img, storage, &contour, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
+	cvZero(dst);  //清空数组
+
+	//_contour：为了保存轮廓的首指针位置，因为随后contour将用来迭代
+	CvSeq* _contour=contour;
+
+	//----------------------画外轮廓和内轮廓-------------
+	IplImage* test=NULL;
+	test=cvCreateImage(cvGetSize(src), src->depth, src->nChannels);
+	CvScalar colorEx1=CV_RGB(255, 0, 0);  //外层轮廓红色
+	CvScalar colorEx2=CV_RGB(0, 255, 0);  //内层轮廓绿色
+
+	CvSeq* cNext=NULL;
+	bool first=true;
+	int count=0;  //轮廓数量
+	int tempRow,tempCol;
+	int tempB,tempG,tempR;
+	int up=0,right=0,left=0,down=0,none=0,upleft=0,upright=0,downleft=0,downright=0;  //八邻域
+	for(CvSeq* c=contour; c!=NULL; c=cNext)
+	{
+		double tmp=fabs(cvContourArea(c));  //计算轮廓面积
+		//------------删除大连通域------------
+		if(tmp>connectedDomain)  //面积大于最小连通域，删除
+		{
+			//删除大面积
+			cNext=c->h_next;
+			cvClearSeq(c);
+			continue;
+		}
+		else
+		{
+			if(first)  //如果序列中的第一个轮廓被删除，则将序列首指针指向它的下一个元素
+				contour=c;
+			first=false;
+
+			//**************填充小轮廓*****************
+			//c->total：序列contours_tmp中点的总数
+			for(int j=0; j<c->total; j++)  //提取一个轮廓的所有坐标点
+			{
+				//cvGetSeqElem（）：返回索引指定的元素指针
+				CvPoint *pt=(CvPoint*)cvGetSeqElem(c, j);  //cvGetSeqElem：得到轮廓中的一个点
+
+				//存储该位置像素的位置信息
+				tempRow=pt->y;
+				tempCol=pt->x;
+				//排除图像边缘
+				if(tempRow!=0 || tempRow!=HEIGHT-1 || tempCol!=0 || tempCol!=WIDTH-1)
+				{
+					//存储该位置像素的颜色信息
+					tempB=spacialMat.at<Vec3b>(tempRow,tempCol)[0];
+					tempG=spacialMat.at<Vec3b>(tempRow,tempCol)[1];
+					tempR=spacialMat.at<Vec3b>(tempRow,tempCol)[2];
+
+					//该像素八邻域的颜色信息
+					//当邻域像素与该位置颜色不同时，就不必继续看其他邻域像素，可以直接对该轮廓进行填充
+					int b,g,r;
+					//上边的点
+					b=spacialMat.at<Vec3b>(tempRow-1,tempCol)[0];
+					g=spacialMat.at<Vec3b>(tempRow-1,tempCol)[1];
+					r=spacialMat.at<Vec3b>(tempRow-1,tempCol)[2];
+					if(b!=tempB && g!=tempG && r!=tempR)
+					{
+						// cvDrawContours()：在图像上绘制外部内部轮廓
+						//第一个参数：要在其上绘制轮廓的图像
+						//第二个参数：指向第一个轮廓的指针
+						//第三个参数：外轮廓的颜色
+						//第四个参数：内轮廓的颜色
+						//第五个参数：画轮廓的最大层数。0：只绘制contours_tmp
+						//第六个参数：绘制轮廓线的宽度。CV_FILLED：contours_tmp内部将被绘制
+						//第七个参数：轮廓线段的类型
+						//第八个参数：按给定值移动所有点的坐标
+						cvDrawContours(test, c, CV_RGB(r,g,b), CV_RGB(r,g,b), 0, CV_FILLED, 8, cvPoint(0,0));
+						up++;
+
+						//修改像素的信息
+						graph[tempRow][tempCol].initColor_B=b;
+						graph[tempRow][tempCol].initColor_G=g;
+						graph[tempRow][tempCol].initColor_R=r;
+						if(b==0 && g==255 && r==255)
+						{	
+							graph[tempRow][tempCol].category=0;  //背景
+						}
+						else if(b==0 && g==0 && r==255)
+						{
+							graph[tempRow][tempCol].category=1;  //物体
+						}
+						else
+							graph[tempRow][tempCol].category=2;  //阴影
+							
+						break;
+					}
+
+					//右边的点
+					b=spacialMat.at<Vec3b>(tempRow,tempCol+1)[0];
+					g=spacialMat.at<Vec3b>(tempRow,tempCol+1)[1];
+					r=spacialMat.at<Vec3b>(tempRow,tempCol+1)[2];
+					if(b!=tempB && g!=tempG && r!=tempR)
+					{
+						cvDrawContours(test, c, CV_RGB(r,g,b), CV_RGB(r,g,b), 0, CV_FILLED, 8, cvPoint(0,0));
+						right++;
+
+						//修改像素的信息
+						graph[tempRow][tempCol].initColor_B=b;
+						graph[tempRow][tempCol].initColor_G=g;
+						graph[tempRow][tempCol].initColor_R=r;
+						if(b==0 && g==255 && r==255)
+						{	
+							graph[tempRow][tempCol].category=0;  //背景
+						}
+						else if(b==0 && g==0 && r==255)
+						{
+							graph[tempRow][tempCol].category=1;  //物体
+						}
+						else
+							graph[tempRow][tempCol].category=2;  //阴影
+
+						break;
+					}
+
+					//下边的点
+					b=spacialMat.at<Vec3b>(tempRow+1,tempCol)[0];
+					g=spacialMat.at<Vec3b>(tempRow+1,tempCol)[1];
+					r=spacialMat.at<Vec3b>(tempRow+1,tempCol)[2];
+					if(b!=tempB && g!=tempG && r!=tempR)
+					{
+						cvDrawContours(test, c, CV_RGB(r,g,b), CV_RGB(r,g,b), 0, CV_FILLED, 8, cvPoint(0,0));
+						down++;
+
+						//修改像素的信息
+						graph[tempRow][tempCol].initColor_B=b;
+						graph[tempRow][tempCol].initColor_G=g;
+						graph[tempRow][tempCol].initColor_R=r;
+						if(b==0 && g==255 && r==255)
+						{	
+							graph[tempRow][tempCol].category=0;  //背景
+						}
+						else if(b==0 && g==0 && r==255)
+						{
+							graph[tempRow][tempCol].category=1;  //物体
+						}
+						else
+							graph[tempRow][tempCol].category=2;  //阴影
+
+						break;
+					}
+
+					//左边的点
+					b=spacialMat.at<Vec3b>(tempRow,tempCol-1)[0];
+					g=spacialMat.at<Vec3b>(tempRow,tempCol-1)[1];
+					r=spacialMat.at<Vec3b>(tempRow,tempCol-1)[2];
+					if(b!=tempB && g!=tempG && r!=tempR)
+					{
+						cvDrawContours(test, c, CV_RGB(r,g,b), CV_RGB(r,g,b), 0, CV_FILLED, 8, cvPoint(0,0));
+						left++;
+
+						//修改像素的信息
+						graph[tempRow][tempCol].initColor_B=b;
+						graph[tempRow][tempCol].initColor_G=g;
+						graph[tempRow][tempCol].initColor_R=r;
+						if(b==0 && g==255 && r==255)
+						{	
+							graph[tempRow][tempCol].category=0;  //背景
+						}
+						else if(b==0 && g==0 && r==255)
+						{
+							graph[tempRow][tempCol].category=1;  //物体
+						}
+						else
+							graph[tempRow][tempCol].category=2;  //阴影
+
+						break;
+					}
+
+					//左上边的点
+					b=spacialMat.at<Vec3b>(tempRow-1,tempCol-1)[0];
+					g=spacialMat.at<Vec3b>(tempRow-1,tempCol-1)[1];
+					r=spacialMat.at<Vec3b>(tempRow-1,tempCol-1)[2];
+					if(b!=tempB && g!=tempG && r!=tempR)
+					{
+						cvDrawContours(test, c, CV_RGB(r,g,b), CV_RGB(r,g,b), 0, CV_FILLED, 8, cvPoint(0,0));
+						upleft++;
+
+						//修改像素的信息
+						graph[tempRow][tempCol].initColor_B=b;
+						graph[tempRow][tempCol].initColor_G=g;
+						graph[tempRow][tempCol].initColor_R=r;
+						if(b==0 && g==255 && r==255)
+						{	
+							graph[tempRow][tempCol].category=0;  //背景
+						}
+						else if(b==0 && g==0 && r==255)
+						{
+							graph[tempRow][tempCol].category=1;  //物体
+						}
+						else
+							graph[tempRow][tempCol].category=2;  //阴影
+
+						break;
+					}
+
+					//右上边的点
+					b=spacialMat.at<Vec3b>(tempRow-1,tempCol+1)[0];
+					g=spacialMat.at<Vec3b>(tempRow-1,tempCol+1)[1];
+					r=spacialMat.at<Vec3b>(tempRow-1,tempCol+1)[2];
+					if(b!=tempB && g!=tempG && r!=tempR)
+					{
+						cvDrawContours(test, c, CV_RGB(r,g,b), CV_RGB(r,g,b), 0, CV_FILLED, 8, cvPoint(0,0));
+						upright++;
+
+						//修改像素的信息
+						graph[tempRow][tempCol].initColor_B=b;
+						graph[tempRow][tempCol].initColor_G=g;
+						graph[tempRow][tempCol].initColor_R=r;
+						if(b==0 && g==255 && r==255)
+						{	
+							graph[tempRow][tempCol].category=0;  //背景
+						}
+						else if(b==0 && g==0 && r==255)
+						{
+							graph[tempRow][tempCol].category=1;  //物体
+						}
+						else
+							graph[tempRow][tempCol].category=2;  //阴影
+
+						break;
+					}
+
+					//左下边的点
+					b=spacialMat.at<Vec3b>(tempRow+1,tempCol-1)[0];
+					g=spacialMat.at<Vec3b>(tempRow+1,tempCol-1)[1];
+					r=spacialMat.at<Vec3b>(tempRow+1,tempCol-1)[2];
+					if(b!=tempB && g!=tempG && r!=tempR)
+					{
+						cvDrawContours(test, c, CV_RGB(r,g,b), CV_RGB(r,g,b), 0, CV_FILLED, 8, cvPoint(0,0));
+						downleft++;
+
+						//修改像素的信息
+						graph[tempRow][tempCol].initColor_B=b;
+						graph[tempRow][tempCol].initColor_G=g;
+						graph[tempRow][tempCol].initColor_R=r;
+						if(b==0 && g==255 && r==255)
+						{	
+							graph[tempRow][tempCol].category=0;  //背景
+						}
+						else if(b==0 && g==0 && r==255)
+						{
+							graph[tempRow][tempCol].category=1;  //物体
+						}
+						else
+							graph[tempRow][tempCol].category=2;  //阴影
+
+						break;
+					}
+
+					//右下边的点
+					b=spacialMat.at<Vec3b>(tempRow+1,tempCol+1)[0];
+					g=spacialMat.at<Vec3b>(tempRow+1,tempCol+1)[1];
+					r=spacialMat.at<Vec3b>(tempRow+1,tempCol+1)[2];
+					if(b!=tempB && g!=tempG && r!=tempR)
+					{
+						cvDrawContours(test, c, CV_RGB(r,g,b), CV_RGB(r,g,b), 0, CV_FILLED, 8, cvPoint(0,0));
+						downright++;
+
+						//修改像素的信息
+						graph[tempRow][tempCol].initColor_B=b;
+						graph[tempRow][tempCol].initColor_G=g;
+						graph[tempRow][tempCol].initColor_R=r;
+						if(b==0 && g==255 && r==255)
+						{	
+							graph[tempRow][tempCol].category=0;  //背景
+						}
+						else if(b==0 && g==0 && r==255)
+						{
+							graph[tempRow][tempCol].category=1;  //物体
+						}
+						else
+							graph[tempRow][tempCol].category=2;  //阴影
+
+						break;
+					}
+
+					none++;
+					cvDrawContours(test, c, CV_RGB(tempR,tempG,tempB), CV_RGB(tempR,tempG,tempB), 0, CV_FILLED, 8, cvPoint(0,0));
+					continue;
+				}
+				
+			}
+
+			count++;
+		}
+		cNext=c->h_next;
+	}
+	cout<<"小连通域个数："<<count<<endl;
+	cout<<"up个数："<<up<<endl;
+	cout<<"right个数："<<right<<endl;
+	cout<<"down个数："<<down<<endl;
+	cout<<"left个数："<<left<<endl;
+	cout<<"upleft个数："<<upleft<<endl;
+	cout<<"upright个数："<<upright<<endl;
+	cout<<"downleft个数："<<downleft<<endl;
+	cout<<"downright个数："<<downright<<endl;
+	cout<<"none个数："<<none<<endl;
+	cvNamedWindow("fill image", CV_WINDOW_AUTOSIZE);
+	cvShowImage("fill image", test);
+	cvWaitKey(0);
+
+
+	//------------保存新的图像-------
+	Mat testMat(test, 0);
+	for(int i=0; i<testMat.rows; i++)
+	{
+		for(int j=0; j<testMat.cols; j++)
+		{
+			if( (testMat.at<Vec3b>(i,j)[0]==0 && testMat.at<Vec3b>(i,j)[1]==255 && testMat.at<Vec3b>(i,j)[2]==255) || (testMat.at<Vec3b>(i,j)[0]==0 && testMat.at<Vec3b>(i,j)[1]==0 && testMat.at<Vec3b>(i,j)[2]==255) || (testMat.at<Vec3b>(i,j)[0]==0 && testMat.at<Vec3b>(i,j)[1]==255 && testMat.at<Vec3b>(i,j)[2]==0))
+				graph[i][j].revise=1;
+		}
+	}
+
+	for(int i=0;i<spacialMat.rows;i++)
+	{
+		for(int j=0;j<spacialMat.cols;j++)
+		{
+			if(graph[i][j].revise==1)
+			{
+				spacialMat.at<Vec3b>(i,j)[0]=testMat.at<Vec3b>(i,j)[0];   
+				spacialMat.at<Vec3b>(i,j)[1]=testMat.at<Vec3b>(i,j)[1];
+				spacialMat.at<Vec3b>(i,j)[2]=testMat.at<Vec3b>(i,j)[2];
+			}
+		}
+	}
+	namedWindow("填充最小连通域",WINDOW_NORMAL);
+	imshow("填充最小连通域", spacialMat);
+	waitKey(0);
+	destroyWindow("填充最小连通域");
+	cvDestroyWindow("filter image");	
+	cvDestroyWindow("fill image");
+	cvReleaseImage(&test);
+	cvReleaseImage(&src);
+	cvReleaseImage(&dst);
+	cvReleaseMemStorage(&storage);
+
+	//保存进一步检测的图片
+	imwrite("G:\\Code-Shadow Detection\\Data\\Spacial Improved\\20170228111043_brightness+local+spacial.bmp", spacialMat);
+}
+
 
 //阴影检测算法
 int shadowDetection()
 {
 	//step1. 色度差阴影检测
-//	chromaticityDiffer();
+	chromaticityDiffer();
 
 	//step2. 亮度差阴影检测
-//	brightnessDiffer();
+	brightnessDiffer();
 
 	//step3. 局部亮度比
-//	localRelation();
+	localRelation();
 
 	//step4.利用连通域的包围关系优化阴影和物体
-//	spatialAjustment();
-	improvedSpace();
+	spatialAjustment();  //手动选取阈值
+
+	//step5.填充最小连通域
+	fillSmallDomain();   //填充最小连通域
 
 	return 0;
 }
