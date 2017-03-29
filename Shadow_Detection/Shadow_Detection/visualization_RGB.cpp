@@ -21,7 +21,7 @@ using namespace std;
 int visualization_RGB()
 {
 	//IplImage:图像对象
-	IplImage *img=cvLoadImage("G:\\Code-Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
+	IplImage *img=cvLoadImage("F:\\Code\\Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
 	
 	//高斯滤波，以平滑图像
 	cvSmooth(img, img, CV_GAUSSIAN, 3, 0, 0, 0);
@@ -47,10 +47,10 @@ int visualization_RGB()
 	cvShowImage("Image_G", img_g);
 	cvShowImage("Image_B", img_b);
 
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\RGB\\Img_Rgb.jpg",img);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\RGB\\Img_R.jpg",img_r);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\RGB\\Img_G.jpg",img_g);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\RGB\\Img_B.jpg",img_b);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\RGB\\Img_Rgb.jpg",img);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\RGB\\Img_R.jpg",img_r);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\RGB\\Img_G.jpg",img_g);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\RGB\\Img_B.jpg",img_b);
 
 	cvWaitKey(0);  //cvWaitKey程序暂停，等待用户触发一个按键操作
 	cvReleaseImage(&img);

@@ -7,6 +7,9 @@ Function:
 2.相机标定
 3.阴影检测
 (1)色度差阴影检测
+(2)亮度比阴影检测
+（3）四邻域阴影检测优化
+（4）最小连通域阴影检测优化
 ------------------------------------------------
 */
 #include "opencv2/core/core.hpp"
@@ -25,7 +28,6 @@ Function:
 #include "visualization_YCbCr.h"
 #include "visualization_C1C2C3.h"
 #include "visualization_L1L2L3.h"
-#include "camera_calibrate.h"
 #include "shadow_detection.h"
 
 using namespace cv;
@@ -40,19 +42,17 @@ int resultRGB_B[WIDTH][HEIGHT],resultRGB_G[WIDTH][HEIGHT],resultRGB_R[WIDTH][HEI
 
 int main()
 {
-	/*
+	
 	//各种颜色空间及相应通道的可视化
- 	visualization_RGB();   //RGB
-	visualization_HSI();   //HSI
-	visualization_LAB();   //LAB
-	visualization_HSV();   //HSV
-	visualization_YCbCr();  //YCbCr
-	visualization_C1C2C3();  //C1C2C3 
-	visualization_L1L2L3();  //L1L2L3
-	*/
+// 	visualization_RGB();   //RGB
+//	visualization_HSI();   //HSI
+//	visualization_LAB();   //LAB
+//	visualization_HSV();   //HSV
+//	visualization_YCbCr();  //YCbCr
+//	visualization_C1C2C3();  //C1C2C3 
+//	visualization_L1L2L3();  //L1L2L3
+	
 
-	//相机标定
-//	camera_calibrate();  
 
 	//阴影检测
 	shadowDetection();

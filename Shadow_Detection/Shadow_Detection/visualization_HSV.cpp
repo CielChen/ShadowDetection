@@ -24,7 +24,7 @@ using namespace std;
 int visualization_HSV()
 {
 	IplImage *img, *hsv, *hue, *saturation, *value;
-	img=cvLoadImage("G:\\Code-Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
+	img=cvLoadImage("F:\\Code\\Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
 	
 	//高斯滤波，以平滑图像
 	cvSmooth(img, img, CV_GAUSSIAN, 3, 0, 0, 0);
@@ -49,10 +49,10 @@ int visualization_HSV()
 	cvShowImage("Image_S", saturation);
 	cvShowImage("Image_V", value);
 
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\HSV\\Image_HSV.jpg",hsv);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\HSV\\Img_H.jpg",hue);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\HSV\\Img_S.jpg",saturation);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\HSV\\Img_V.jpg",value);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\HSV\\Image_HSV.jpg",hsv);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\HSV\\Img_H.jpg",hue);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\HSV\\Img_S.jpg",saturation);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\HSV\\Img_V.jpg",value);
 
 	cvWaitKey(0);  //cvWaitKey程序暂停，等待用户触发一个按键操作
 	cvReleaseImage(&hsv);

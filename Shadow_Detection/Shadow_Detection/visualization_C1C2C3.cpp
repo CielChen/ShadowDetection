@@ -34,7 +34,7 @@ int visualization_C1_C2_C3()
 	uchar *data, *data_c1, *data_c2, *data_c3;
 	int i,j;
 
-	IplImage *frame=cvLoadImage("G:\\Code-Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
+	IplImage *frame=cvLoadImage("F:\\Code\\Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
 
 	//高斯滤波，以平滑图像
 	cvSmooth(frame, frame, CV_GAUSSIAN, 3, 0, 0, 0);
@@ -79,9 +79,9 @@ int visualization_C1_C2_C3()
 	cvShowImage("Img_C2", c1c2c3_c2);
 	cvShowImage("Img_C3", c1c2c3_c3);
 
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\C1C2C3\\Img_C1.jpg", c1c2c3_c1);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\C1C2C3\\Img_C2.jpg", c1c2c3_c2);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\C1C2C3\\Img_C3.jpg", c1c2c3_c3);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\C1C2C3\\Img_C1.jpg", c1c2c3_c1);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\C1C2C3\\Img_C2.jpg", c1c2c3_c2);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\C1C2C3\\Img_C3.jpg", c1c2c3_c3);
 	
 	waitKey(0);
 	cvDestroyAllWindows();
@@ -112,7 +112,7 @@ IplImage* catC1C2C3Image(CvMat* C1C2C3_C1, CvMat* C1C2C3_C2, CvMat* C1C2C3_C3)
 //C1C2C3空间可视化
 int visualization_C1C2C3()
 {
-	IplImage *img=cvLoadImage("G:\\Code-Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
+	IplImage *img=cvLoadImage("F:\\Code\\Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
 	
 	//高斯滤波，以平滑图像
 	cvSmooth(img, img, CV_GAUSSIAN, 3, 0, 0, 0);
@@ -163,7 +163,7 @@ int visualization_C1C2C3()
 	cvShowImage("img", img);
 	cvShowImage("C1C2C3 Color Model", C1C2C3_Image);
 
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\C1C2C3\\Img_C1C2C3.jpg",C1C2C3_Image);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\C1C2C3\\Img_C1C2C3.jpg",C1C2C3_Image);
 	
 	cvWaitKey(0);
 

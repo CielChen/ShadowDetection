@@ -95,8 +95,8 @@ double norm2(int b,int g,int r)
 //假设输入的前景图片已经处理为背景是黄色，前景非黄色
 int chromaticityDiffer()
 {
-	sceneMat=imread("G:\\Code-Shadow Detection\\Data\\Foreground\\20170228111043_fore.jpg");  //最开始提取到的前景图像
-	backgroundMat=imread("G:\\Code-Shadow Detection\\Data\\Background\\20170228111043_back.jpg");  //背景图像
+	sceneMat=imread("F:\\Code\\Shadow Detection\\Data\\Foreground\\20170228111043_fore.jpg");  //最开始提取到的前景图像
+	backgroundMat=imread("F:\\Code\\Shadow Detection\\Data\\Background\\20170228111043_back.jpg");  //背景图像
 
 	namedWindow("前景图");
 	imshow("前景图", sceneMat);
@@ -164,7 +164,7 @@ int chromaticityDiffer()
 
 	//将每个像素的CD值保存到txt文件中
 	//B分量
-	ofstream out_cdB("G:\\Code-Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Statistics\\cd_B.txt");  //打开文件
+	ofstream out_cdB("F:\\Code\\Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Statistics\\cd_B.txt");  //打开文件
 	for(int i=0;i<sceneMat.rows;i++)
 	{
 		for(int j=0;j<sceneMat.cols;j++)
@@ -174,7 +174,7 @@ int chromaticityDiffer()
 		out_cdB<<endl;   //每行输出结束，添加换行
 	}
 	//G分量
-	ofstream out_cdG("G:\\Code-Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Statistics\\cd_G.txt");  //打开文件
+	ofstream out_cdG("F:\\Code\\Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Statistics\\cd_G.txt");  //打开文件
 	for(int i=0;i<sceneMat.rows;i++)
 	{
 		for(int j=0;j<sceneMat.cols;j++)
@@ -184,7 +184,7 @@ int chromaticityDiffer()
 		out_cdG<<endl;   //每行输出结束，添加换行
 	}
 	//R分量
-	ofstream out_cdR("G:\\Code-Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Statistics\\cd_R.txt");  //打开文件
+	ofstream out_cdR("F:\\Code\\Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Statistics\\cd_R.txt");  //打开文件
 	for(int i=0;i<sceneMat.rows;i++)
 	{
 		for(int j=0;j<sceneMat.cols;j++)
@@ -392,8 +392,8 @@ int chromaticityDiffer()
 	vector<int>imwriteJPGquality;
 	imwriteJPGquality.push_back(CV_IMWRITE_JPEG_QUALITY);   //JPG格式图片的质量
 	imwriteJPGquality.push_back(100);
-	//imwrite("G:\\Code-Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Differ Result\\201702281110043_chromaticity.jpg", chromaticityMat);
-	imwrite("G:\\Code-Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Differ Result\\201702281110043_chromaticity.bmp", chromaticityMat);
+	//imwrite("F:\\Code\\Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Differ Result\\201702281110043_chromaticity.jpg", chromaticityMat);
+	imwrite("F:\\Code\\Shadow Detection\\Data\\Chromaticity Difference\\Chromaticity Differ Result\\201702281110043_chromaticity.bmp", chromaticityMat);
 	return 0;
 }
 
@@ -405,7 +405,7 @@ int brightnessDiffer()
 	//按照论文，只对色度差检测到的阴影继续筛选
 	//将每个像素的BD值保存到txt文件中
 	//B分量
-	ofstream out_bdB("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Statistics\\bd_B.txt");  //打开文件
+	ofstream out_bdB("F:\\Code\\Shadow Detection\\Data\\Brightness Difference\\Brightness Statistics\\bd_B.txt");  //打开文件
 	for(int i=0;i<sceneMat.rows;i++)
 	{
 		for(int j=0;j<sceneMat.cols;j++)
@@ -415,7 +415,7 @@ int brightnessDiffer()
 		out_bdB<<endl;   //每行输出结束，添加换行
 	}
 	//G分量
-	ofstream out_bdG("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Statistics\\bd_G.txt");  //打开文件
+	ofstream out_bdG("F:\\Code\\Shadow Detection\\Data\\Brightness Difference\\Brightness Statistics\\bd_G.txt");  //打开文件
 	for(int i=0;i<sceneMat.rows;i++)
 	{
 		for(int j=0;j<sceneMat.cols;j++)
@@ -425,7 +425,7 @@ int brightnessDiffer()
 		out_bdG<<endl;   //每行输出结束，添加换行
 	}
 	//R分量
-	ofstream out_bdR("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Statistics\\bd_R.txt");  //打开文件
+	ofstream out_bdR("F:\\Code\\Shadow Detection\\Data\\Brightness Difference\\Brightness Statistics\\bd_R.txt");  //打开文件
 	for(int i=0;i<sceneMat.rows;i++)
 	{
 		for(int j=0;j<sceneMat.cols;j++)
@@ -540,8 +540,8 @@ int brightnessDiffer()
 	destroyWindow("对比：亮度差检测结果");
 
 	//保存对比图片
-	//imwrite("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness_VS_chromaticity.jpg", brightnessMat);
-	imwrite("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness_VS_chromaticity.bmp", brightnessMat);
+	//imwrite("F:\\Code\\Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness_VS_chromaticity.jpg", brightnessMat);
+	imwrite("F:\\Code\\Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness_VS_chromaticity.bmp", brightnessMat);
 
 	//保存色度+亮度的结果，统一颜色：阴影绿色，物体红色
 	for(int i=0;i<brightnessMat.rows;i++)
@@ -561,8 +561,8 @@ int brightnessDiffer()
 	waitKey(0);
 	destroyWindow("色度+亮度差检测结果");
 	//保存进一步检测的图片
-	//imwrite("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness+chromaticity.jpg", brightnessMat);
-	imwrite("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness+chromaticity.bmp", brightnessMat);
+	//imwrite("F:\\Code\\Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness+chromaticity.jpg", brightnessMat);
+	imwrite("F:\\Code\\Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness+chromaticity.bmp", brightnessMat);
 
 	return 0;
 }
@@ -572,7 +572,7 @@ int localRelation()
 {
 	cout<<"-------------局部强度比检测阴影------------------"<<endl;
 	//	localMat=brightnessMat.clone();   //深拷贝：localMat拷贝了brightnessMat，形成一个新的图像矩阵，两者相互没有影响
-	localMat=imread("G:\\Code-Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness+chromaticity.bmp");  //读取图像
+	localMat=imread("F:\\Code\\Shadow Detection\\Data\\Brightness Difference\\Brightness Differ Result\\20170228111043_brightness+chromaticity.bmp");  //读取图像
 	namedWindow("色度+亮度差检测结果",WINDOW_NORMAL);
 	imshow("色度+亮度差检测结果", localMat);
 	waitKey(0);
@@ -671,8 +671,8 @@ int localRelation()
 	destroyWindow("色度+亮度差检测结果");
 
 	//保存对比图片
-	//imwrite("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness_VS_local.jpg", localMat);
-	imwrite("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness_VS_local.bmp", localMat);
+	//imwrite("F:\\Code\\Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness_VS_local.jpg", localMat);
+	imwrite("F:\\Code\\Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness_VS_local.bmp", localMat);
 
 	//保存色度+亮度+局部对比的结果，统一颜色：阴影绿色，物体红色
 	for(int i=0;i<localMat.rows;i++)
@@ -692,8 +692,8 @@ int localRelation()
 	waitKey(0);
 	destroyWindow("色度+亮度差+局部对比检检测结果");
 	//保存进一步检测的图片
-	//imwrite("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.jpg", localMat);
-	imwrite("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp", localMat);
+	//imwrite("F:\\Code\\Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.jpg", localMat);
+	imwrite("F:\\Code\\Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp", localMat);
 
 	return 0;
 }
@@ -703,8 +703,8 @@ int spatialAjustment()
 {
 	cout<<"-------------利用连通域的包围关系优化结果------------------"<<endl;
 	//spacialMat=localMat.clone();   //深拷贝：spacialMat拷贝了localMat，形成一个新的图像矩阵，两者相互没有影响
-	spacialMat=imread("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp");  //读取图像
-	//spacialMat=imread("G:\\Code-Shadow Detection\\Data\\Color Space\\RGB\\Img_Rgb.jpg");
+	spacialMat=imread("F:\\Code\\Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp");  //读取图像
+	//spacialMat=imread("F:\\Code\\Shadow Detection\\Data\\Color Space\\RGB\\Img_Rgb.jpg");
 	namedWindow("对比：色度+亮度差+局部检测结果",WINDOW_NORMAL);
 	imshow("对比：色度+亮度差+局部检测结果", spacialMat);
 	waitKey(0);
@@ -820,7 +820,7 @@ void on_ThreshChange(int, void*)
 //填充小连通域
 void fillSmallDomain()
 {
-	spacialMat=imread("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp");  //读取图像
+	spacialMat=imread("F:\\Code\\Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp");  //读取图像
 	//统计当前的物体(红色）像素个数
 	int objectNum=0;
 	int shadowNum=0;
@@ -870,7 +870,7 @@ void fillSmallDomain()
 	CvScalar external_color;  //外轮廓颜色。图像二值化后，只有黑色和白色，白色区域的轮廓是“外轮廓”
 	CvScalar hole_color;  //内轮廓颜色，黑色区域的轮廓是“内轮廓”
 
-	src=cvLoadImage("G:\\Code-Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp",1);
+	src=cvLoadImage("F:\\Code\\Shadow Detection\\Data\\Local Relation\\Local Relation Result\\20170228111043_brightness+local.bmp",1);
 	img=cvCreateImage(cvGetSize(src), IPL_DEPTH_8U, 1);
 	dst=cvCreateImage(cvGetSize(src), src->depth, src->nChannels);
 
@@ -1224,7 +1224,7 @@ void fillSmallDomain()
 	cvReleaseMemStorage(&storage);
 
 	//保存进一步检测的图片
-	imwrite("G:\\Code-Shadow Detection\\Data\\Spacial Improved\\20170228111043_brightness+local+spacial.bmp", spacialMat);
+	imwrite("F:\\Code\\Shadow Detection\\Data\\Spacial Improved\\20170228111043_brightness+local+spacial.bmp", spacialMat);
 }
 
 
@@ -1232,16 +1232,17 @@ void fillSmallDomain()
 int shadowDetection()
 {
 	//step1. 色度差阴影检测
-	chromaticityDiffer();
+//	chromaticityDiffer();
 
 	//step2. 亮度差阴影检测
-	brightnessDiffer();
+	//注：这个函数要用到chromaticityDiffer()
+//	brightnessDiffer();
 
 	//step3. 局部亮度比
-	localRelation();
+//	localRelation();
 
 	//step4.利用连通域的包围关系优化阴影和物体
-	spatialAjustment();  //手动选取阈值
+//	spatialAjustment();  //手动选取阈值
 
 	//step5.填充最小连通域
 	fillSmallDomain();   //填充最小连通域

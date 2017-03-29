@@ -24,7 +24,7 @@ using namespace std;
 int visualization_YCbCr()
 {
 	IplImage *img, *YCbCr, *Y, *Cb, *Cr;
-	img=cvLoadImage("G:\\Code-Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
+	img=cvLoadImage("F:\\Code\\Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
 	
 	//高斯滤波，以平滑图像
 	cvSmooth(img, img, CV_GAUSSIAN, 3, 0, 0, 0);
@@ -49,10 +49,10 @@ int visualization_YCbCr()
 	cvShowImage("Image_Cb", Cb);
 	cvShowImage("Image_Cr", Cr);
 
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\YCbCr\\Image_YCbCr.jpg",YCbCr);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\YCbCr\\Image_Y.jpg",Y);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\YCbCr\\Image_Cb.jpg",Cb);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\YCbCr\\Image_Cr.jpg",Cr);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\YCbCr\\Image_YCbCr.jpg",YCbCr);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\YCbCr\\Image_Y.jpg",Y);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\YCbCr\\Image_Cb.jpg",Cb);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\YCbCr\\Image_Cr.jpg",Cr);
 
 	cvWaitKey(0);  //cvWaitKey程序暂停，等待用户触发一个按键操作
 	cvReleaseImage(&YCbCr);

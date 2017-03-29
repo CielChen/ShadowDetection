@@ -38,7 +38,7 @@ int visualization_H_S_I()
 	int i,j;
 	double min_rgb, add_rgb, theta, den, num;
 
-	IplImage *frame=cvLoadImage("G:\\Code-Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
+	IplImage *frame=cvLoadImage("F:\\Code\\Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
 
 	//高斯滤波，以平滑图像
 	cvSmooth(frame, frame, CV_GAUSSIAN, 3, 0, 0, 0);
@@ -96,9 +96,9 @@ int visualization_H_S_I()
 	cvShowImage("Img_S", hsi_s);
 	cvShowImage("Img_I", hsi_i);
 
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\HSI\\Img_H.jpg", hsi_h);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\HSI\\Img_S.jpg", hsi_s);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\HSI\\Img_I.jpg", hsi_i);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\HSI\\Img_H.jpg", hsi_h);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\HSI\\Img_S.jpg", hsi_s);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\HSI\\Img_I.jpg", hsi_i);
 	
 	waitKey(0);
 	cvDestroyAllWindows();
@@ -129,7 +129,7 @@ IplImage* catHSImage(CvMat* HSI_H, CvMat* HSI_S, CvMat* HSI_I)
 //HSI空间可视化
 int visualization_HSI()
 {
-	IplImage *img=cvLoadImage("G:\\Code-Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
+	IplImage *img=cvLoadImage("F:\\Code\\Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
 	
 	//高斯滤波，以平滑图像
 	cvSmooth(img, img, CV_GAUSSIAN, 3, 0, 0, 0);
@@ -197,7 +197,7 @@ int visualization_HSI()
 	cvShowImage("img", img);
 	cvShowImage("HSI Color Model", HSI_Image);
 
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\HSI\\Img_HSI.jpg",HSI_Image);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\HSI\\Img_HSI.jpg",HSI_Image);
 	
 	cvWaitKey(0);
 

@@ -23,7 +23,7 @@ using namespace std;
 //LAB空间图片可视化
 int visualization_LAB()
 {
-	IplImage *img=cvLoadImage("G:\\Code-Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
+	IplImage *img=cvLoadImage("F:\\Code\\Shadow Detection\\test.jpg",1);  //cvLoadImage读取图像
 	
 	//高斯滤波，以平滑图像
 	cvSmooth(img, img, CV_GAUSSIAN, 3, 0, 0, 0);
@@ -76,10 +76,10 @@ int visualization_LAB()
 	cvShowImage("Image_A", lab_a);
 	cvShowImage("Image_B", lab_b);
 
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\LAB\\Img_LAB.jpg",LABimg);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\LAB\\Img_L.jpg",lab_l);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\LAB\\Img_A.jpg",lab_a);
-	cvSaveImage("G:\\Code-Shadow Detection\\Data\\Color Space\\LAB\\Img_B.jpg",lab_b);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\LAB\\Img_LAB.jpg",LABimg);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\LAB\\Img_L.jpg",lab_l);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\LAB\\Img_A.jpg",lab_a);
+	cvSaveImage("F:\\Code\\Shadow Detection\\Data\\Color Space\\LAB\\Img_B.jpg",lab_b);
 
 	cvWaitKey(0);  //cvWaitKey程序暂停，等待用户触发一个按键操作
 	cvReleaseImage(&LABimg);
