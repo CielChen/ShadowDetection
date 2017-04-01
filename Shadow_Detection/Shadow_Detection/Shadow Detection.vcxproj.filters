@@ -15,64 +15,58 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="visualization_RGB.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="visualization_HSI.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="visualization_LAB.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="visualization_HSV.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="visualization_YCbCr.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="visualization_C1C2C3.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="visualization_L1L2L3.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="camera_calibrate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="shadow_detection.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="visualization_RGB.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="visualization_HSI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="visualization_LAB.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="visualization_HSV.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="visualization_YCbCr.h">
+    <ClInclude Include="shadow_detection.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="visualization_C1C2C3.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="visualization_HSI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="visualization_HSV.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="visualization_L1L2L3.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="camera_calibrate.h">
+    <ClInclude Include="visualization_LAB.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="shadow_detection.h">
+    <ClInclude Include="visualization_RGB.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="visualization_YCbCr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="shadow_detection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="visualization_C1C2C3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="visualization_HSI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="visualization_HSV.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="visualization_L1L2L3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="visualization_LAB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="visualization_RGB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="visualization_YCbCr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
